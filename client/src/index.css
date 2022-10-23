@@ -128,6 +128,18 @@ input{
   width: 200px;
   border: 1px solid #55d0ec;
 }
+.v{
+  width: 30%;
+}
+.cl{
+  display: flex;
+  justify-content: space-evenly;
+  width: 50%;
+  background-color: skyblue;
+  margin: 10px;
+  padding: 10px 0px;
+  box-shadow: 5px 5px 3px rgba(0,0,0, 0.2);
+}
 
 .l{
   width: 40%;
@@ -140,6 +152,11 @@ display: flex;
 margin: 10px;
 /* box-shadow: 4px 5px 5px rgba(0,0,0,.2); */
 border: 1px solid #55d0ec;
+}
+
+.map button{
+  padding: 10px 20px;
+  margin: 5px ;
 }
 
 .thead th{
@@ -177,4 +194,8 @@ border: 1px solid #55d0ec;
 .subsecond{
   width: 200px;
   text-align: center;
+}
+
+.effort.cls{
+  margin-top: 0px;
 }

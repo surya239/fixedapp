@@ -14,13 +14,14 @@ import BidPrice from './BidPrice'
 import Summary from './Summary'
 import { useParams } from 'react-router-dom'
 function Render(){
-    const {name} = useParams();
+    const {name, id} = useParams();
+    console.log(useParams())
     if(name === '' || name === undefined){
         return (<>
         <div className='Dash'>
             <div className='n'>
                 <h1>Dash Board</h1>
-
+                <h4>ID: {id}</h4>
             </div>
             <div className='n'>
                 <BidPrice />

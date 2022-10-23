@@ -5,6 +5,8 @@ import Module from './Module'
 import R from "./R";
 import BidPrice from "./BidPrice";
 import ResourceCost from "./ResourceCost";
+import {useParams} from 'react-router-dom';
+
 function Resource(){
     const [changestate, setChangeState] = useState(0)
     const [lifeCycle, setLifeCycle] = useState([])
@@ -15,6 +17,7 @@ function Resource(){
     const [changeLifeCycle,setChangeLifeCycle] = useState('')
     const [changeWM, setChangeWM] = useState(0)
     const [changeWH, setChangeWH] = useState(0)
+    const {id} = useParams()
     const setData = async(data, req) =>{
         let L = []
         let WM = []
@@ -44,7 +47,7 @@ function Resource(){
     }
     const gethefault = async() => {
         try {
-            const response = axios.get(`/getresource/${'abc@gmail.com'}`)
+            const response = axios.get(`http://localhost:5000/api/getresource/${id}`)
             const data = (await response).data[0]
             setData(data, (await response).data[1])
             const d = (await response).data[2]
@@ -68,7 +71,7 @@ function Resource(){
             setChangeWH(label)
         }
         try {
-            const response = axios.post("/changeresource",{table:table, value:label})
+            const response = axios.post("http://localhost:5000/changeresource",{table:table, value:label, id: id})
             setChangeState(changestate + 1)
         } catch (error) {
             console.log(error)

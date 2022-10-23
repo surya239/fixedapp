@@ -9,11 +9,12 @@ function Effort(){
     const [option, setOption] = useState([])
     const [d, setDefaultValue] = useState(0)
     const [update, setUpdate] = useState(0)
+    const {id, email} = useParams();
     const {name, state} = useParams();
     const [changestate, setChange] = useState(state)
     const getValue = async() => {
         try {
-            const result = axios.get(`/adjust/${'abc'}`)
+            const result = axios.get(`http://localhost:5000/adjust/${id}`)
             const data = (await result).data[0]
             const percentage = (await result).data[1]
             let dataArray = []
@@ -40,9 +41,9 @@ function Effort(){
     const change = async(e) =>{
         const value = e.value
         try {
-            const response = axios.post("/changeeffort",{value})
+            const response = axios.post("http://localhost:5000/changeeffort",{value, id})
             setChange(!changestate)
-            history.push(`/${name}/${changestate}`)
+            // history.push(`/play/dashboard/${email}/${id}/${name}/:state/${name}/${changestate}`)
         } catch (error) {
             console.log(error)
         }

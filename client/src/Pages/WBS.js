@@ -2,10 +2,11 @@ import React,{useState, useEffect} from "react"
 import axios from "axios"
 import BidPrice from "./BidPrice"
 import wbs from '../Images/Doc1.jpg'
+import {useParams} from 'react-router-dom'
 function WBS(){
     const [changeState, SetChangeState] = useState(0)
     const [state, setState] = useState({
-        complexScreen:50,
+        complexScreen:0,
         simpleScreen:120,
         complexDatabase:80,
         simpleDatabase:40,
@@ -25,13 +26,13 @@ function handleChange(e){
  })
  
 }
-
+const {id} = useParams()
 const handleBlur = async e => {
     const coloumn = e.target.name
     const value = e.target.value
     console.log(coloumn, value)
     try {
-        const response = axios.post("/wbs",{coloumn, value})
+        const response = axios.post("http://localhost:5000/wbs",{coloumn, value,id})
         const data = (await response).data
         setState({
             ...state,
@@ -69,7 +70,7 @@ const setValues = (data) => {
 }
 const getValues = async() => {
     try {
-        const response = axios.get(`/tablevalues/${'WBS'}/${'abc@gmail.com'}`)
+        const response = axios.get(`http://localhost:5000/tablevalues/${'WBS'}/${id}`)
         console.log((await response).data)
         const data = (await response).data
         setValues(data)

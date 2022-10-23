@@ -1,7 +1,7 @@
 import React,{useEffect, useState} from "react";
 import axios from "axios";
 import Select from 'react-select'
-
+import {useParams} from 'react-router-dom';
 function Contigency(params){
     const {name} = params
     const [options, setOptions] = useState([])
@@ -11,9 +11,10 @@ function Contigency(params){
     const [subRisk, setSubRisk] = useState(0)
     const [contigency, setContigency] = useState(0)
     const [state, setState] = useState(0)
+    const {id} = useParams()
     const getValues = async() => {
         try {
-            const response = axios.get(`/contigency/${name}`)
+            const response = axios.get(`http://localhost:5000/contigency/${name}/${id}`)
             let data = []
             for(var i = 0; i<(await response).data[0].length; i++){
                 data[i]={
@@ -35,7 +36,7 @@ function Contigency(params){
     const change = async(e, name) => {
         const label = e.value
         try {
-            const response = axios.post('/changecontigency', {label, name})
+            const response = axios.post('http://localhost:5000/changecontigency', {label, name, id})
             console.log((await response).data)
             setState(state + 1)
             window.location.reload(false);

@@ -1,10 +1,7 @@
 import React,{useEffect, useState} from "react";
 import axios from "axios";
 import Select from 'react-select'
-import Pvst from "./Pvst";
-import TotalResource from "./TotalResource";
-import GettotalResource from "./GettotalResource";
-import BidPrice from "./BidPrice";
+import {useParams} from 'react-router-dom'
 function ResourceCost(){
     const [changeState, setChangeState] = useState(0)
     const [pvslOption, setPvslOption] = useState([])
@@ -15,9 +12,10 @@ function ResourceCost(){
     const [defaultTemporarySalary, setDefaultTemporarySalary] = useState(0)
     const [pload, setPload] = useState('')
     const [tload, setTload] = useState('')
+    const {id} = useParams()
     const getValues = async() => {
         try {
-            const response = axios.get("/resourcecostvalues")
+            const response = axios.get(`http://localhost:5000/resourcecostvalues/${id}`)
             const pvsl = (await response).data[0]
             const psalary = (await response).data[1]
             const tsalary = (await response).data[2]
@@ -56,7 +54,7 @@ function ResourceCost(){
                 setPload(value[0])
                 setTload(value[1])
             }
-            const response = axios.post("/changeresourcecost",{coloumn, label})
+            const response = axios.post("http://localhost:5000/changeresourcecost",{coloumn, label, id})
             setChangeState(changeState+1)
             window.location.reload(false);
         } catch (error) {
@@ -76,7 +74,7 @@ function ResourceCost(){
             </div>
             <div>
                 <h4>Permanent  Monthly Sal USD</h4>
-                {defaultPermanentSalary===0 ?null:<Select options={permanentSalary} onChange={(e) => change(e,'parmenentsalary')} defaultValue={{id:4, label: defaultPermanentSalary, value: defaultPermanentSalary}} />}
+                {defaultPermanentSalary===0 ?null:<Select options={permanentSalary} onChange={(e) => change(e,'permenentsalary')} defaultValue={{id:4, label: defaultPermanentSalary, value: defaultPermanentSalary}} />}
             </div>
             <div>
                 <h4>Temporary  Monthly Sal USD</h4>

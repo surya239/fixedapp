@@ -2,14 +2,16 @@ import React,{useState, useEffect} from "react";
 import axios from "axios";
 import Select from 'react-select'
 import BidPrice from "./BidPrice";
+import {useParams} from 'react-router-dom'
 function Infra(){
     const [options,setOptions] = useState([])
     const [defaultValue, setDefaultValue] = useState(0)
     const [cost, setCost] = useState(0)
     const [update, setUpdate] = useState(0)
+    const {id} = useParams()
     const getValues = async() => {
         try {
-            const response = axios.get(`/getinfra`)
+            const response = axios.get(`http://localhost:5000/getinfra/${id}`)
             let data = []
             for(let i =0; i< (await response).data[0].length ; i++){
                 data[i] = {
@@ -33,7 +35,7 @@ function Infra(){
         try {
             const value = e.value
             const c = 'cost'
-            const response = axios.post('/infrachange', {value, c})
+            const response = axios.post('http://localhost:5000/infrachange', {value, c, id})
             setUpdate(update + 1)
         } catch (error) {
             console.log(error)

@@ -1,57 +1,65 @@
-import React, { useState } from "react"
-import Select from 'react-select'
-import Render from "./Render"
-import { useHistory } from "react-router-dom"
+import axios from "axios";
+import React,{useState, useEffect} from "react";
+import { useParams, useHistory } from "react-router-dom";
+
 function Dashboard(){
-const options = [{
-    label:'Admin',
-    value:'Admin'
-},{
-    label:"Instructor",
-    value:'Instructor'
-},{
-    label:"Player",
-    value:'Player'
+    const {email} = useParams()
+    const history = useHistory()
+    const [games, setGames] = useState([])
+    let i = 1;
+    const createGame = async() => {
+        
+        try {
+            const result = axios.post("http://localhost:5000/api/creategame",{email})
+            const {id} = (await result).data
+            console.log((await result).data)
+            history.push(`/game/dashboard/${email}/${id}`)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    const getValues = async() => {
+        try {
+            const result = axios.get(`http://localhost:5000/api/getgames/${email}`)
+            const data = (await result).data
+            setGames(data)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+const g = (id)=>{
+    console.log(id)
+    history.push(`/game/dashboard/${email}/${id}`)
 }
-]
 
-const history = useHistory();
-
-const [page,setPage] = useState('')
-
-const change = (a) =>{
-    history.push(`/${a}/${false}`)
+const change = (id) => {
+    history.push(`/report/dashboard/${email}/${id}`)
 }
-return(
-    <>
-        <div className="flex">
-
-            <div className="first">
-                {/* <Select options={options} /> */}
-                <ul className="styleNone" >
-                    <li><button onClick={() => change('WBS')}>WBS</button></li>
-                    <li><button onClick={() => change('WBS')}>Quantity</button></li>
-                    <li><button onClick={() => change('Effort')}>Effort</button></li>
-                    <li><button onClick={() => change('Productivity')}>Productiviy</button></li>
-                    <li><button onClick={() => change('Resources')} >Resources</button></li>
-                    {/* <li><button onClick={() => change('ResourceCost')} >Resource Cost</button></li> */}
-                    <li><button onClick={() => change('Project')}>Project</button></li>
-                    <li><button onClick={() => change('subContract')}>Sub contract</button></li>
-                    <li><button onClick={() => change('Contigency')} >Contigency</button></li>
-                    <li><button onClick={() => change('Infra')} >Infra</button></li>
-                    <li><button onClick={() => change("costOfCapital")} >Cost of Capital</button></li>
-                    <li><button onClick={() => change('Summary')}>Overhead</button></li>
-                    <li><button onClick={() => change('Summary')}>Profit</button></li>
-                    <li><button onClick={() => change('Summary')} >Summary</button></li>
-                </ul>
+    useEffect(() =>{
+        getValues()
+    },[])
+    return(
+        <>
+            <div>
+                hi {email}
             </div>
-            <div className="second">
-                <Render name = {page} />
+            <div>
+                <button onClick={createGame}>Start new game</button>
             </div>
-          
-        </div>
-    </>
-)
+            <div>
+                <h1>Game History</h1>
+                <div className="map">
+                   {games.map(game => (
+                    <div key={game.gameid}>
+                        <span>game {i++}</span>
+                        <button onClick={() => g(game.gameid)} >Restart</button>
+                        <button onClick ={() =>change(game.gameid) } >Report</button>
+                    </div>
+                   ))}
+                </div>
+            </div>
+        </>
+    )
 }
 
-export default Dashboard
+export default Dashboard;

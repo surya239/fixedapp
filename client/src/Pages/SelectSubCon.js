@@ -2,7 +2,7 @@ import React,{useState, useEffect} from "react";
 import Select from 'react-select'
 import axios from "axios";
 import Risk from "./Risk";
-
+import {useParams} from 'react-router-dom'
 function SelectSubCon(){
     const [selectOptions, setSelectOptions] = useState([])
     // const [defaultrequirement, setDefaultRequirement] = useState('')
@@ -11,9 +11,10 @@ function SelectSubCon(){
     const [defaultTesting, setDefaultTesting] = useState('')
     const [defaultDeployment, setDefaultDeployment] = useState('')
     const [state, setState] = useState(0)
+    const {id} = useParams()
     const getValues = async() => {
         try {
-            const response = axios.get(`/selectsubcon`)
+            const response = axios.get(`http://localhost:5000/selectsubcon/${id}`)
             const data = (await response).data[0]
             let dataArray = []
             for(var i =0; i<data.length; i++){
@@ -35,7 +36,7 @@ function SelectSubCon(){
         try {
             const value = e.value
             console.log(e)
-            const response = axios.post('/changesub', {value, c1})
+            const response = axios.post('http://localhost:5000/changesub', {value, c1, id})
             console.log((await response).data)
             setState(state + 1)
             window.location.reload(false);

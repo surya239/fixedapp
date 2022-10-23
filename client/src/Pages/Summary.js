@@ -2,6 +2,8 @@ import React,{useEffect, useState} from "react";
 import axios from "axios";
 import Select from 'react-select';
 import BidPrice from "./BidPrice";
+import {useParams} from 'react-router-dom';
+
 function Summary(){
     const [offshore, setOffshore] = useState([])
     const [profit, setProfit] = useState([])
@@ -9,6 +11,7 @@ function Summary(){
     const [defaultProject, setDefaultProject] = useState('')
     const [offshorecost, setOffshorecost] = useState(0)
     const [onsite, setOnsite] = useState(0)
+    const {id} = useParams()
     const [infra, setInfra] = useState(0)
     const [subcost, setSubcost] = useState(0)
     const [contigency, setContigency] = useState(0)
@@ -20,7 +23,7 @@ function Summary(){
     const [state, setState] = useState(0)
     const getValues = async() => {
         try {
-            const response = axios.get(`/summary`)
+            const response = axios.get(`http://localhost:5000/summary/${id}`)
             let data = []
             for(let i = 0; i< (await response).data[0].length; i++){
                 data[i] = {
@@ -58,8 +61,9 @@ function Summary(){
 
     const change = async(e, column) => {
         const value = e.value
+        console.log(value)
         try {
-            const response = axios.post('/changebidsummary', {value, column})
+            const response = axios.post('http://localhost:5000/changebidsummary', {value, column,id})
             setState(state + 1)
         } catch (error) {
             console.log(error)

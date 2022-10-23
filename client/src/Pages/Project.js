@@ -2,8 +2,9 @@ import React,{useEffect, useState} from "react";
 import axios from "axios";
 import Select from 'react-select'
 import BidPrice from "./BidPrice";
-
+import {useParams} from 'react-router-dom'
 function Project(){
+    const {id} = useParams()
     const [teamRatio, setTeamRatio] = useState([])
     const [defaultTeamRatio, setDefaultTeamRatio] = useState('')
     const [noOfTeamMembers, setNoOfTeamMembers] = useState(0)
@@ -31,7 +32,7 @@ function Project(){
     const [changeState, setChangestate] = useState(0)
     const getValues = async() => {
         try {
-            const result = axios.get(`/getproject`)
+            const result = axios.get(`http://localhost:5000/getproject/${id}`)
             const data = (await result).data[0]
             let dataArray = []
             for(var i = 0; i<data.length; i++){
@@ -102,7 +103,7 @@ function Project(){
         const value2 = value[1]
         console.log(value1, value2, c1, c2)
         try {
-        const response =   axios.post('/changeproject',{value1, value2, c1, c2})
+        const response =   axios.post('http://localhost:5000/changeproject',{value1, value2, c1, c2, id})
         console.log((await response).data)
         setChangestate(changeState + 1)
         console.log(changeState)
@@ -113,7 +114,7 @@ function Project(){
     const changeValue = async(e, c1) => {
         try {
             const value = e.value
-            const response = axios.post('/changeprojectvalues', {value, c1})
+            const response = axios.post('http://localhost:5000/changeprojectvalues', {value, c1, id})
             console.log((await response).data)
             setChangestate(changeState + 1)
         } catch (error) {
@@ -136,7 +137,7 @@ function Project(){
         <h3>Project Management</h3>
 
         </div>
-            <div className="effort" >
+            <div className="effort cls" >
                 <div>
                 <h4>Team Leader - Team Member Ratio</h4>
                 { defaultTeamRatio===''?null :<Select options={teamRatio} defaultValue={{id:6, label:defaultTeamRatio, value: defaultTeamRatio} } onChange={(e) => change(e,'teamleader', 'teamemberratio')} />}
@@ -156,7 +157,7 @@ function Project(){
                 
 
             </div>
-            <div className="effort" >
+            <div className="effort cls" >
                 <div>
                 <h3>Heriustic</h3>
 
@@ -165,10 +166,10 @@ function Project(){
                 </div>
                 
             </div>
-            <div className="effort" >
+            <div className="effort cls" >
                 <h3>Onsite</h3>
-            </div>
-            <div className="effort">
+            
+            <div>
                 <div>
                     <h4>Onsite-Offshore Support Ratio</h4>
                     {defaultonsite === ''?null:<Select options={onsite} defaultValue={{id:1, label: defaultonsite, id: defaultonsite}} onChange={(e) => change(e,'onsite','offshore')} />}
@@ -178,6 +179,7 @@ function Project(){
                     {defaultOnsiteSalary === 0?null:<Select options={onsiteSalary} defaultValue={{id:0, label:defaultOnsiteSalary, value: defaultOnsiteSalary}} onChange={(e) => changeValue(e,'onsitesalary')} />}
                 </div>
             </div>
+        </div>
             <div>
                 {/* <table>
                     <thead>
