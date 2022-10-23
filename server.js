@@ -5,7 +5,7 @@ const express = require("express");
 const app = express();
 const jwt = require('jsonwebtoken')
 const cors = require('cors');
-import routes from "./ServerRoute/index.js";
+// import routes from "./ServerRoute/index.js";
 
 import pool  from './db.js';
 app.use(cors());
