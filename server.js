@@ -5,7 +5,7 @@ const express = require("express");
 const app = express();
 const jwt = require('jsonwebtoken')
 const cors = require('cors');
-import routes from "./ServerRoute/index.js";
+// import routes from "./ServerRoute/index.js";
 
 import pool  from './db.js';
 app.use(cors());
@@ -21,6 +21,7 @@ const PORT = process.env.PORT || 5000;
 // routes.forEach(route => {
 //     app[route.method](route.path, route.handler);
 // });
+
 
 
 
