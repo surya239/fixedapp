@@ -11,7 +11,6 @@ const login = {
         try {
             const {email, pass} = req.body;
             const log = await pool.query("SELECT * FROM signup WHERE email=$1 ", [email])
-            console.log(log.rows)
             let r = log.rows;
             let re = r.find(ex => ex.email===email)
             if(re === undefined){
@@ -31,7 +30,7 @@ const login = {
                (err, token) =>{
                    if(err){
 
-                       res.json(log.rows)
+                       res.sendStatus(500)
                    }
                  res.json({token}).status(200);
                }
