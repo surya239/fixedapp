@@ -1,4 +1,4 @@
-import pool from "../db.js";
+import pool from "./db.js";
 
 const getProductivity = {
     path:'/productivity/:name/:id',

@@ -1,4 +1,4 @@
-import pool from '../db.js'
+import pool from './db.js'
 const contigency = {
     Insignificant: 0.25,
     Minor: 0.5,

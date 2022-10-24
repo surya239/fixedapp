@@ -1,4 +1,4 @@
-import pool from "../db.js";
+import pool from "./db.js";
 const contigencyCost = {
     Insignificant:0.25,
     Minor:0.5,
@@ -11,14 +11,14 @@ const contigencyCost = {
 
 const Infra = [500, 600, 700]
 const costOfCapital = [7, 8, 9, 10,12,14,18,22]
-const getFinance = {
-    path:'/getcostofcapital/:id',
+const overHead = [2,3,4]
+const expectedProfit = [5, 10, 15, 20, 25,30,35]
+const getSummary = {
+    path:'/summary/:id',
     method:'get',
     handler: async(req, res) => {
         try {
             const {id} = req.params
-            const {costofcapital} = await (await pool.query(`SELECT * from finance where gameid = $1`,[id])).rows[0]
-            console.log(costofcapital)
             const wbs = await pool.query(`SELECT * from wbs where gameid = $1`,[id])
             const accuracy = await pool.query(`SELECT * from effort where gameid = $1`,[id])
             const pcs = await pool.query(`Select productivity from complexscreen where gameid = $1`,[id])
@@ -153,51 +153,11 @@ const getFinance = {
             const overHeadCost = (totalSubCost + totalSubContractRisk + infra + totalCotigency + onsite + totalProject) * overhead / 100
             const profit = ((totalSubCost + totalSubContractRisk + infra + totalCotigency + onsite + totalProject+overHeadCost + 11121 ) / (1 - expectedprofit /100)) - (totalSubCost + totalSubContractRisk + infra + totalCotigency + onsite + totalProject+overHeadCost + 11121)
             const bitPrice = overHeadCost + totalSubCost + totalSubContractRisk + infra + totalCotigency + onsite + totalProject +profit + 11121
-            const cashOut = {
-                requirement: rcost.requirement + subcost.requirement + (totalProject/5),
-                design: rcost.design + subcost.design + (totalProject/5),
-                coding: rcost.coding + subcost.coding + (totalProject/5),
-                testing: rcost.testing+ subcost.testing + (totalProject/5),
-                deployment: rcost.deployment + subcost.deployment + (totalProject/5)
-            }
-            const cashIn = {
-                requirement: bitPrice * (5/100),
-                design: bitPrice * (10/100),
-                coding: bitPrice * (20/100),
-                testing: bitPrice * (5/100),
-                deployment: bitPrice * (60/100)
-            }
-            const workingCapital = {
-                requirement: cashOut.requirement-cashIn.requirement,
-                design: cashOut.design - cashIn.design,
-                coding: cashOut.coding -cashIn.coding,
-                testing: cashOut.testing-cashIn.testing,
-                deployment: cashOut.deployment - cashIn.deployment
-            }
-            let workingCapitalcum = {
-                requirement: workingCapital.requirement,
-                design:0,
-                coding:0,
-                testing: 0,
-                deployment: 0
-            }
-            workingCapitalcum.design = workingCapital.design + workingCapitalcum.requirement
-            workingCapitalcum.coding = workingCapital.coding + workingCapitalcum.design
-            workingCapitalcum.testing = workingCapital.coding + workingCapital.testing
-            workingCapitalcum.deployment = workingCapital.deployment + workingCapitalcum.testing
-            console.log(workingCapitalcum.requirement * costofcapital / 100)
-            const finance = {
-                requirement: workingCapitalcum.requirement > 0 ? workingCapitalcum.requirement * costofcapital /100 : 0 ,
-                design: workingCapitalcum.design > 0 ? workingCapitalcum.design * costofcapital /100 : 0 ,
-                coding: workingCapitalcum.coding > 0 ? workingCapitalcum.coding * costofcapital /100 : 0 ,
-                testing: workingCapitalcum.testing > 0 ? workingCapitalcum.testing * costofcapital /100 : 0 ,
-                deployment: workingCapitalcum.deployment > 0 ? workingCapitalcum.deployment * costofcapital /100 : 0};
-                const totalFinance = finance.requirement + finance.design + finance.coding + finance.deployment + finance.testing
-            res.json([costofcapital, costOfCapital, Math.round(totalFinance)]).status(200)
+            res.json([overHead, expectedProfit, overhead, expectedprofit, totalSubContractRisk, totalSubCost, infra,onsite, totalCotigency, totalProject,overHeadCost,11121, profit, bitPrice]).status(200)
         } catch (error) {
             console.log(error)
         }
     }
 }
 
-export default getFinance;
+export default getSummary

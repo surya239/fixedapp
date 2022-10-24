@@ -1,4 +1,4 @@
-import pool from "../db.js";
+import pool from "./db.js";
 const contigencyCost = {
     Insignificant:0.25,
     Minor:0.5,
@@ -11,16 +11,14 @@ const contigencyCost = {
 
 const Infra = [500, 600, 700]
 const costOfCapital = [7, 8, 9, 10,12,14,18,22]
-
-const getInfra = {
-    path:'/getinfra/:id',
+const getBidPrice = {
+    path:'/getbid/:id',
     method:'get',
     handler: async(req, res) => {
         try {
-            const {id} = req.params;
+            const {id} = req.params
             const wbs = await pool.query(`SELECT * from wbs where gameid = $1`,[id])
             const accuracy = await pool.query(`SELECT * from effort where gameid = $1`,[id])
-            const cost1 = await pool.query("SELECT cost from infra where gameid = $1",[id])
             const pcs = await pool.query(`Select productivity from complexscreen where gameid = $1`,[id])
             const pss = await pool.query(`Select productivity from simplescreen where gameid = $1`,[id])
             const pcd = await pool.query(`select productivity from complexdatabase where gameid = $1`,[id])
@@ -38,7 +36,6 @@ const getInfra = {
             const ucr = await pool.query(`select ${pcr.rows[0]['productivity']} from complexreport where gameid = $1`,[id])
             const usr = await pool.query(`select ${psr.rows[0]['productivity']} from simplereport where gameid = $1`,[id])
             const estimation = accuracy.rows[0]['effortpercentage'] / 100
-            
             const Screen = (ucs.rows[0][pcs.rows[0]['productivity']] * wbs.rows[0]['complexscreen'] ) / (estimation) + (uss.rows[0][pss.rows[0]['productivity']] * wbs.rows[0]['simplescreen'] ) / (estimation)
             const Database = (ucd.rows[0][pcd.rows[0]['productivity']] * wbs.rows[0]['complexdatabase'] ) / (estimation) + (usd.rows[0][psd.rows[0]['productivity']] * wbs.rows[0]['simpledatabase'] ) / (estimation)
             const Api = (uca.rows[0][pca.rows[0]['productivity']] * wbs.rows[0]['complexapi'] ) / (estimation) + (usa.rows[0][psa.rows[0]['productivity']] * wbs.rows[0]['simpleapi'] ) / (estimation)
@@ -48,27 +45,26 @@ const getInfra = {
             const Module2 = Database / (resource.rows[0]['workingday'] * resource.rows[0]['phperday'])
             const Module3 = Api / (resource.rows[0]['workingday'] * resource.rows[0]['phperday'])
             const Module4 = Report / (resource.rows[0]['workingday'] * resource.rows[0]['phperday'])
-         
             const requirement = Module1 * (resource.rows[0]['requirement'] / 100) + Module2 * (resource.rows[0]['requirement'] / 100) + Module3 * (resource.rows[0]['requirement'] / 100) + Module4 * (resource.rows[0]['requirement'] / 100)
             const Design = Module1 * (resource.rows[0]['design'] / 100) + Module2 * (resource.rows[0]['design'] / 100) + Module3 * (resource.rows[0]['design'] / 100) + Module4 * (resource.rows[0]['design'] / 100)
             const coding = Module1 * (resource.rows[0]['coding'] / 100) + Module2 * (resource.rows[0]['coding'] / 100) + Module3 * (resource.rows[0]['coding'] / 100) + Module4 * (resource.rows[0]['coding'] / 100)
             const testing = Module1 * (resource.rows[0]['testing'] / 100) + Module2 * (resource.rows[0]['testing'] / 100) + Module3 * (resource.rows[0]['testing'] / 100) + Module4 * (resource.rows[0]['testing'] / 100)
             const deployment = Module1 * (resource.rows[0]['deployment'] / 100) + Module2 * (resource.rows[0]['deployment'] / 100) + Module3 * (resource.rows[0]['deployment'] / 100) + Module4 * (resource.rows[0]['deployment'] / 100)
-          
             const r = await pool.query("SELECT * FROM requirement where gameid = $1",[id])
             const d = await pool.query("SELECT * FROM design where gameid = $1",[id])
             const c = await pool.query("SELECT * FROM coding where gameid = $1",[id])
             const t = await pool.query("SELECT * from testing where gameid = $1",[id])
             const de = await pool.query("SELECT * FROM deployment where gameid = $1",[id])
             const project = (await pool.query(`SELECT * from projectmanagement where gameid = $1`,[id])).rows[0]
+           
             const salary = await pool.query("SELECT * from resourcecost where gameid = $1",[id])
             const maxValue = Math.max(requirement, Design, coding, testing, deployment)
             const onsite = Math.round(5 * maxValue/project.offshore * project.onsitesalary)
             const totalProject = Math.round((maxValue/project.teamemberratio * 5 * project.teamleadsalary) + ( maxValue/project.teamemberratio/ project.teamleadratio * 5 * project.pmsalary))
     
-            console.log(totalProject)
+            
             const p =salary.rows[0]['permenentsalary']
-            console.log(p)
+            // console.log(p)
             const temp = salary.rows[0]['temporarysalary']
             const permenent = {
                 requirement: Math.round((requirement * salary.rows[0]['permenent'] / 100) * p +  (requirement * salary.rows[0]['temporaryload'] / 100) * temp),
@@ -123,7 +119,7 @@ const getInfra = {
                 testing:contigencyCost[t.rows[0]['riskrating']],
                 deployment:contigencyCost[de.rows[0]['riskrating']]
             }
-            const riskValue = await (await pool.query('SELECT * from riskrating ')).rows[0]
+            const riskValue = await (await pool.query('SELECT * from riskrating')).rows[0]
             const subRisk = {
                 requirement: contigencyCost[r.rows[0]['subcontractor']],
                 design:contigencyCost[riskValue[d.rows[0]['subcontractor']]],
@@ -139,16 +135,23 @@ const getInfra = {
                 testing: rcost.testing * inhouse.testing / 100 + subcost.testing * subRisk.testing /100,
                 deployment: rcost.deployment * inhouse.deployment / 100 + subcost.deployment * subRisk.deployment /100
             }
+            const {overhead, expectedprofit} = (await pool.query('SELECT * from bidsummary where gameid = $1',[id])).rows[0]
+            const totalCotigency = Math.round(contigency.requirement + contigency.design + contigency.coding + contigency.testing + contigency.deployment)
+    
+            const totalSubContractRisk = rcost.requirement + rcost.design + rcost.coding + rcost.testing + rcost.deployment
+            const totalSubCost = subcost.requirement + subcost.design + subcost.coding +  subcost.testing + subcost.deployment
             const totalNoOfCOST = noOftotalcost.requirement + noOftotalcost.design + noOftotalcost.coding + noOftotalcost.testing + noOftotalcost.deployment
-           
-             
             const {cost} = (await pool.query(`SELECT cost from infra where gameid = $1`,[id])).rows[0]
             const infra = Math.round(totalNoOfCOST * cost)
-    res.json([Infra, cost1.rows[0]['cost'], costOfCapital, infra]).status(200)
+            const overHeadCost = (totalSubCost + totalSubContractRisk + infra + totalCotigency + onsite + totalProject) * overhead / 100
+            const profit = ((totalSubCost + totalSubContractRisk + infra + totalCotigency + onsite + totalProject+overHeadCost + 11121 ) / (1 - expectedprofit /100)) - (totalSubCost + totalSubContractRisk + infra + totalCotigency + onsite + totalProject+overHeadCost + 11121)
+            const bitPrice = overHeadCost + totalSubCost + totalSubContractRisk + infra + totalCotigency + onsite + totalProject +profit + 11121
+            
+            res.json(Math.round(bitPrice)).status(200)
         } catch (error) {
             console.log(error)
         }
     }
 }
 
-export default getInfra;
+export default getBidPrice

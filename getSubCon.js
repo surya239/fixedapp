@@ -1,4 +1,4 @@
-import pool from "../db.js";
+import pool from "./db.js";
 const selectSubCon = ['none', 'subCon - 1', 'subCon - 2', 'subCon - 3']
 const getSub = 
 {

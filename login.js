@@ -1,4 +1,4 @@
-import pool from '../db.js'
+import pool from './db.js'
 import { createRequire } from "module";
 const require = createRequire(import.meta.url);
 const jwt = require('jsonwebtoken')

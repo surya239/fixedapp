@@ -1,4 +1,4 @@
-import pool from "../db.js";
+import pool from "./db.js";
 const lifecycle = '20,20,20,20,20'
 const Wd = 22
 const phd = 6

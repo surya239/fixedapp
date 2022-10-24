@@ -1,4 +1,4 @@
-import pool from "../db.js";
+import pool from "./db.js";
 
 const Heuristic = [2,4,6,8,10,12,14,15]
 const onshareOffshareRatio = ['1-5', '1-7', '1-10', '1-12']

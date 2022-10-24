@@ -1,4 +1,4 @@
-import pool from "../db.js";
+import pool from "./db.js";
 const estimation = 60
 const c = 'Estimation accuracy level'
 const changeEffort = {
