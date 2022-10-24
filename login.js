@@ -29,7 +29,8 @@ const login = {
                },
                (err, token) =>{
                    if(err){
-                       res.sendStatus(500).send(err)
+
+                       res.sendStatus(500)
                    }
                  res.json({token}).status(200);
                }
