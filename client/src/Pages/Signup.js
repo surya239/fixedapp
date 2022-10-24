@@ -17,7 +17,7 @@ function Signup(){
             const email = values.email;
             const pass = values.pass
             try {
-                const response = axios.post(`http://localhost:5000/api/signup`,{email, pass})
+                const response = axios.post(`/api/signup`,{email, pass})
                 const {token} = (await response).data
                 setToken(token);
                 console.log((await response).data)

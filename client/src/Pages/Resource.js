@@ -47,7 +47,7 @@ function Resource(){
     }
     const gethefault = async() => {
         try {
-            const response = axios.get(`http://localhost:5000/api/getresource/${id}`)
+            const response = axios.get(`/api/getresource/${id}`)
             const data = (await response).data[0]
             setData(data, (await response).data[1])
             const d = (await response).data[2]
@@ -71,7 +71,7 @@ function Resource(){
             setChangeWH(label)
         }
         try {
-            const response = axios.post("http://localhost:5000/changeresource",{table:table, value:label, id: id})
+            const response = axios.post("/changeresource",{table:table, value:label, id: id})
             setChangeState(changestate + 1)
         } catch (error) {
             console.log(error)

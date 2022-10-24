@@ -10,7 +10,7 @@ function BidPrice(params){
     const [bidPrice, setBidPrice] = useState(0)
     const getValues = async() => {
         try {
-            const response = axios.get(`http://localhost:5000/getbid/${id}`)
+            const response = axios.get(`/getbid/${id}`)
             setBidPrice((await response).data)
         } catch (error) {
             console.log(error)

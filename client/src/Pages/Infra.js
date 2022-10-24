@@ -11,7 +11,7 @@ function Infra(){
     const {id} = useParams()
     const getValues = async() => {
         try {
-            const response = axios.get(`http://localhost:5000/getinfra/${id}`)
+            const response = axios.get(`/getinfra/${id}`)
             let data = []
             for(let i =0; i< (await response).data[0].length ; i++){
                 data[i] = {
@@ -35,7 +35,7 @@ function Infra(){
         try {
             const value = e.value
             const c = 'cost'
-            const response = axios.post('http://localhost:5000/infrachange', {value, c, id})
+            const response = axios.post('/infrachange', {value, c, id})
             setUpdate(update + 1)
         } catch (error) {
             console.log(error)

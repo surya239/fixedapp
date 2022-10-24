@@ -15,7 +15,7 @@ function ResourceCost(){
     const {id} = useParams()
     const getValues = async() => {
         try {
-            const response = axios.get(`http://localhost:5000/resourcecostvalues/${id}`)
+            const response = axios.get(`/resourcecostvalues/${id}`)
             const pvsl = (await response).data[0]
             const psalary = (await response).data[1]
             const tsalary = (await response).data[2]
@@ -54,7 +54,7 @@ function ResourceCost(){
                 setPload(value[0])
                 setTload(value[1])
             }
-            const response = axios.post("http://localhost:5000/changeresourcecost",{coloumn, label, id})
+            const response = axios.post("/changeresourcecost",{coloumn, label, id})
             setChangeState(changeState+1)
             window.location.reload(false);
         } catch (error) {

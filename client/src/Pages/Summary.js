@@ -23,7 +23,7 @@ function Summary(){
     const [state, setState] = useState(0)
     const getValues = async() => {
         try {
-            const response = axios.get(`http://localhost:5000/summary/${id}`)
+            const response = axios.get(`/summary/${id}`)
             let data = []
             for(let i = 0; i< (await response).data[0].length; i++){
                 data[i] = {
@@ -63,7 +63,7 @@ function Summary(){
         const value = e.value
         console.log(value)
         try {
-            const response = axios.post('http://localhost:5000/changebidsummary', {value, column,id})
+            const response = axios.post('/changebidsummary', {value, column,id})
             setState(state + 1)
         } catch (error) {
             console.log(error)

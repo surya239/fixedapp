@@ -7,7 +7,7 @@ function Reoport(){
     const {id} = useParams
     const getValues = async() => {
         try {
-            const result = axios.get(`http://localhost:5000/getChanges/${id}`);
+            const result = axios.get(`/getChanges/${id}`);
             console.log((await result).data)
             const data = (await result).data
             setChanges(data)

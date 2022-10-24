@@ -15,7 +15,7 @@ function Login(){
             const email = values.email;
             const pass = values.pass
             try {
-                const result = axios.post('http://localhost:5000/api/login',{email, pass})
+                const result = axios.post('/api/login',{email, pass})
                 console.log((await result).data)
                 const {token} = (await result).data
                 setToken(token)

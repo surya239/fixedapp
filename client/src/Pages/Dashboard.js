@@ -10,7 +10,7 @@ function Dashboard(){
     const createGame = async() => {
         
         try {
-            const result = axios.post("http://localhost:5000/api/creategame",{email})
+            const result = axios.post("/api/creategame",{email})
             const {id} = (await result).data
             console.log((await result).data)
             history.push(`/game/dashboard/${email}/${id}`)
@@ -20,7 +20,7 @@ function Dashboard(){
     }
     const getValues = async() => {
         try {
-            const result = axios.get(`http://localhost:5000/api/getgames/${email}`)
+            const result = axios.get(`/api/getgames/${email}`)
             const data = (await result).data
             setGames(data)
         } catch (error) {

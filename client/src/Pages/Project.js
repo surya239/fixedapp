@@ -32,7 +32,7 @@ function Project(){
     const [changeState, setChangestate] = useState(0)
     const getValues = async() => {
         try {
-            const result = axios.get(`http://localhost:5000/getproject/${id}`)
+            const result = axios.get(`/getproject/${id}`)
             const data = (await result).data[0]
             let dataArray = []
             for(var i = 0; i<data.length; i++){
@@ -103,7 +103,7 @@ function Project(){
         const value2 = value[1]
         console.log(value1, value2, c1, c2)
         try {
-        const response =   axios.post('http://localhost:5000/changeproject',{value1, value2, c1, c2, id})
+        const response =   axios.post('/changeproject',{value1, value2, c1, c2, id})
         console.log((await response).data)
         setChangestate(changeState + 1)
         console.log(changeState)
@@ -114,7 +114,7 @@ function Project(){
     const changeValue = async(e, c1) => {
         try {
             const value = e.value
-            const response = axios.post('http://localhost:5000/changeprojectvalues', {value, c1, id})
+            const response = axios.post('/changeprojectvalues', {value, c1, id})
             console.log((await response).data)
             setChangestate(changeState + 1)
         } catch (error) {

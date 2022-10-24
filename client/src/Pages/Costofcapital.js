@@ -11,7 +11,7 @@ function Costofcapital(){
     const {id} = useParams()
     const getValues = async() => {
         try {
-            const result = axios.get(`http://localhost:5000/getcostofcapital/${id}`)
+            const result = axios.get(`/getcostofcapital/${id}`)
             let data = []
             for(let i =0; i<((await result)).data[1].length; i++){
                 data[i] = {
@@ -34,7 +34,7 @@ function Costofcapital(){
         try {
             const value = e.value
             
-            const response = axios.post('http://localhost:5000/changecostofcapital', {value, id})
+            const response = axios.post('/changecostofcapital', {value, id})
             setUpdate(update + 1)
         } catch (error) {
             console.log(error)

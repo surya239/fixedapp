@@ -14,7 +14,7 @@ function Contigency(params){
     const {id} = useParams()
     const getValues = async() => {
         try {
-            const response = axios.get(`http://localhost:5000/contigency/${name}/${id}`)
+            const response = axios.get(`/contigency/${name}/${id}`)
             let data = []
             for(var i = 0; i<(await response).data[0].length; i++){
                 data[i]={
@@ -36,7 +36,7 @@ function Contigency(params){
     const change = async(e, name) => {
         const label = e.value
         try {
-            const response = axios.post('http://localhost:5000/changecontigency', {label, name, id})
+            const response = axios.post('/changecontigency', {label, name, id})
             console.log((await response).data)
             setState(state + 1)
             window.location.reload(false);

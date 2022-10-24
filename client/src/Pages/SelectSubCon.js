@@ -14,7 +14,7 @@ function SelectSubCon(){
     const {id} = useParams()
     const getValues = async() => {
         try {
-            const response = axios.get(`http://localhost:5000/selectsubcon/${id}`)
+            const response = axios.get(`/selectsubcon/${id}`)
             const data = (await response).data[0]
             let dataArray = []
             for(var i =0; i<data.length; i++){
@@ -36,7 +36,7 @@ function SelectSubCon(){
         try {
             const value = e.value
             console.log(e)
-            const response = axios.post('http://localhost:5000/changesub', {value, c1, id})
+            const response = axios.post('/changesub', {value, c1, id})
             console.log((await response).data)
             setState(state + 1)
             window.location.reload(false);

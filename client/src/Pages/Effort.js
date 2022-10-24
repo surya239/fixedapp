@@ -14,7 +14,7 @@ function Effort(){
     const [changestate, setChange] = useState(state)
     const getValue = async() => {
         try {
-            const result = axios.get(`http://localhost:5000/adjust/${id}`)
+            const result = axios.get(`/adjust/${id}`)
             const data = (await result).data[0]
             const percentage = (await result).data[1]
             let dataArray = []
@@ -41,7 +41,7 @@ function Effort(){
     const change = async(e) =>{
         const value = e.value
         try {
-            const response = axios.post("http://localhost:5000/changeeffort",{value, id})
+            const response = axios.post("/changeeffort",{value, id})
             setChange(!changestate)
             // history.push(`/play/dashboard/${email}/${id}/${name}/:state/${name}/${changestate}`)
         } catch (error) {

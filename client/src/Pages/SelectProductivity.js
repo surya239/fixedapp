@@ -17,7 +17,7 @@ function SelectProductivity(params){
     const change = async(e) => {
         try {
             const label = e.label
-            const response = axios.post(`http://localhost:5000/changeproductivity/${name}/${id}`,{label})
+            const response = axios.post(`/changeproductivity/${name}/${id}`,{label})
             console.log((await response).data)
             setState(state+1)
             setUpdate(state+1)
@@ -29,7 +29,7 @@ function SelectProductivity(params){
     const getValues = async() => {
         try {
             console.log("hi")
-            const response = axios.get(`http://localhost:5000/productivity/${name}/${id}`)
+            const response = axios.get(`/productivity/${name}/${id}`)
             const data = (await response).data[0]
             setDefaultValue((await response).data[1])
             setOption([{
