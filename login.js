@@ -11,7 +11,7 @@ const login = {
         try {
             const {email, pass} = req.body;
             const log = await pool.query("SELECT * FROM signup WHERE email=$1 ", [email])
-            console.log(log)
+            console.log(log.rows)
             let r = log.rows;
             let re = r.find(ex => ex.email===email)
             if(re === undefined){
