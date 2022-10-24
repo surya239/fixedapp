@@ -29,8 +29,8 @@ function Signup(){
     })
     return(
         <>
-            <div>
-                <form onSubmit={formik.handleSubmit}>
+            <div className='form'>
+                <form onSubmit={formik.handleSubmit} className='formcontainer'>
                     <div>
                         <label>Email</label><br></br>
                         <input type="email" id="email" name="email" value={formik.values.email} onChange={formik.handleChange} ></input>
@@ -43,8 +43,8 @@ function Signup(){
                         <label>Confirm Password</label><br></br>
                         <input type="password" id="cpass" name="cpass" value={formik.values.cpass} onChange={formik.handleChange} ></input>
                     </div>
-                    <div>
-                        <input type="submit" value="Signup" ></input>
+                    <div className='cen'>
+                        <input className='btn' type="submit" value="Signup" ></input>
                     </div>
                     <div>
                         <p>Already have an account?<Link to='/'>Login</Link> </p>

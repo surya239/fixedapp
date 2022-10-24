@@ -222,9 +222,12 @@ width: 100%;
   padding: 40px;
   box-shadow:0px 4px 4px rgba(29, 16, 16, 0.144);
   border-radius: 8px;
+  background-color: white;
 
 }
-
+a{
+  text-decoration: none;
+}
 .cen{
   display: flex;
   justify-content: center;
