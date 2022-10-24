@@ -1,8 +1,9 @@
 import React,{useState, useEffect} from 'react'
 import axios from 'axios'
 import { useFormik } from 'formik'
-import { useHistory } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import {useToken} from '../Auth/useToken'
+import Signup from './Signup'
 function Login(){
     const history = useHistory()
     const [,setToken] = useToken()
@@ -27,8 +28,8 @@ function Login(){
     })
     return(
         <>
-            <div>
-                <form onSubmit={formik.handleSubmit}>
+            <div className='form'>
+                <form className='formcontainer' onSubmit={formik.handleSubmit}>
                     <div>
                         <label>Email</label><br></br>
                         <input type="email" id="email" name='email' value={formik.values.email} onChange={formik.handleChange} />
@@ -37,10 +38,14 @@ function Login(){
                         <label>Password</label><br></br>
                         <input type="password" id="pass" name="pass" value={formik.values.pass} onChange={formik.handleChange} ></input>
                     </div>
-                    <div>
-                        <input type="submit" value="Login"></input>
+                    <div className='cen'>
+                        <input type="submit" className='btn' value="Login"></input>
                     </div>
+                    <div>
+                    <p>Don't have an account? <Link to='/signup' >Signup</Link></p>
+                </div>
                 </form>
+                
             </div>
         </>
     )

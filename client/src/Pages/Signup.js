@@ -1,7 +1,7 @@
 import React,{useState, useEffect} from "react";
 import axios from 'axios'
 import { useFormik } from "formik";
-import { useHistory } from "react-router-dom";
+import { Link,useHistory } from "react-router-dom";
 import {useToken} from '../Auth/useToken';
 
 function Signup(){
@@ -45,6 +45,9 @@ function Signup(){
                     </div>
                     <div>
                         <input type="submit" value="Signup" ></input>
+                    </div>
+                    <div>
+                        <p>Already have an account?<Link to='/'></Link> </p>
                     </div>
                 </form>
             </div>

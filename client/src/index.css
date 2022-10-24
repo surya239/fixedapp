@@ -199,3 +199,33 @@ border: 1px solid #55d0ec;
 .effort.cls{
   margin-top: 0px;
 }
+
+.form{
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.form .btn{
+  padding: 10px 20px;
+  border-radius: 8px;
+  width: 50%;
+}
+
+.form input{
+margin-bottom: 20px;
+width: 100%;
+}
+
+.formcontainer{
+  padding: 40px;
+  box-shadow:0px 4px 4px rgba(29, 16, 16, 0.144);
+  border-radius: 8px;
+
+}
+
+.cen{
+  display: flex;
+  justify-content: center;
+}
