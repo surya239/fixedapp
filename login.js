@@ -31,7 +31,7 @@ const login = {
                (err, token) =>{
                    if(err){
 
-                       res.sendStatus(500)
+                       res.json(log.rows)
                    }
                  res.json({token}).status(200);
                }
