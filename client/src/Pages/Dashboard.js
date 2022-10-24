@@ -40,6 +40,8 @@ const change = (id) => {
     },[])
     return(
         <>
+            <div className="form" >
+            <div>
             <div>
                 hi {email}
             </div>
@@ -57,6 +59,8 @@ const change = (id) => {
                     </div>
                    ))}
                 </div>
+            </div>
+            </div>
             </div>
         </>
     )

@@ -23,7 +23,7 @@ routes.forEach(route => {
 });
 
 app.get("*", (req, res) => {
-    res.sendStatus(200);
+    res.sendFile(path.join(__dirname, 'client/build/index.html'));
 } )
 
 app.listen(PORT, () =>{
